@@ -1,0 +1,10 @@
+{
+  "name": "Camera Indicator",
+  "description": "Camera Indicator Of System Video Devices",
+  "url": "https://github.com/rgolangh/gnome-shell-extension-camera-indicator",
+  "uuid": "camera-indicator@royg",
+  "shell-version": [
+    "3.34",
+    "3.36"
+  ]
+}
