@@ -13,20 +13,32 @@ To monitor those kernel events I use eBPF to trace C open calls on /dev/videoX d
 for every trace event there is a DBUS method_call event sent on the session bus, to the extension.
 
 ## Design
-   ------------ 3. Gnome Shell extension --------------
-   - catch DBUS event, change indicator accordingly   -
-   -                                                  -
-   -    ------- 2. eBPF trace in userspace ---------  -
-   -    - catch trace event, and send DBUS event   -  -
-   -    -    - -----------------------             -  -
-   -	-    -         1. Kernel     -             -  -
-   -	-    - eBPF send event when  -             -  -
-   -	-    - c:open on /dev/videoX -             -  -
-   -    -    -------------------------             -  -
-   -    -                                          -  - 
-   -    --------------------------------------------  -
-   -                                                  -
-   ----------------------------------------------------
+```
++-----------3. Gnome Shell Camera Indicator DBus object--------------+
+|              listends on a certain address on the                  |
+|              session bus, and toggles the indicator                |
+|              accordingly                                           |
+|                                                                    |
+|      +-----------2. eBPF trace in userspace-----------------+      |
+|      |           catches the trace events and               |      |
+|      |           emits a DBus event to the dbus             |      |
+|      |           address of the extension                   |      |
+|      |                                                      |      |
+|      |            +-----1. Kernel--------------+            |      |
+|      |            |     eBPF sens and events   |            |      |
+|      |            |     on each c:open call    |            |      |
+|      |            |     for /dev/videoX        |            |      |
+|      |            |                            |            |      |
+|      |            |                            |            |      |
+|      |            |                            |            |      |
+|      |            |                            |            |      |
+|      |            |                            |            |      |
+|      |            |                            |            |      |
+|      |            +----------------------------+            |      |
+|      +------------------------------------------------------+      |
++--------------------------------------------------------------------+
+```
+  
 # Install using your browser 
 
 See the [gnome extensions page](https://extensions.gnome.org/extension/TODO/)  
