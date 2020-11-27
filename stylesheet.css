@@ -1,54 +1,9 @@
-
-
 .camera-off {
 	color: gray;
 }
-
-.containers-extension-menu {
-	width: 350px;
-}
-
-.containers-extension-subMenuItem {
-	padding-left: 20px;
-}
-
-.status-running {
-	color: lawngreen;
-}
-
-.status-start {
-	color: lawngreen;
-}
-
-.status-stopped {
+.camera-on {
 	color: red;
+	width: 100%;
 }
 
-.status-remove {
-	color: LightSlateGray;
-}
 
-.status-undefined {
-	color: SkyBlue;
-}
-
-.action-sh {
-	color: greenyellow;
-}
-
-.action-log {
-	color: gray;
-}
-
-.action-stats {
-	color: greenyellow;
-}
-
-.container {
-	/* color: lightsalmon; */
-	padding-left: 20px;
-}
-
-.pod {
-	/* color: lightblue; */
-}

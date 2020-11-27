@@ -63,11 +63,11 @@ class CamMenu extends PanelMenu.Button {
         this.hbox = new St.BoxLayout({ style_class: 'panel-status-menu-box' });
 
         this.icon = new St.Icon({
-                icon_name: 'media-record-symbolic',
+                icon_name: 'camera-web-symbolic',
+
         });
 
         this.hbox.add_child(this.icon);
-        this.hbox.add_child(PopupMenu.arrowIcon(St.Side.BOTTOM));
         this.add_child(this.hbox);
         this.connect('button_press_event', Lang.bind(this, () => {
             if (this.menu.isOpen) {
@@ -80,9 +80,9 @@ class CamMenu extends PanelMenu.Button {
 
     renderMenu(toggleOn) {
         if (toggleOn) {
-            this.icon.style_class="camera-on";
+            this.icon.style_class="popup-menu-icon camera-on";
         } else {
-            this.icon.style_class="camera-off";
+            this.icon.style_class="popup-menu-icon camera-off";
         }
         try {
             this.menu.addMenuItem(new PopupMenu.PopupMenuItem(`basic menu - camera is use ${toggleOn}`)); 
@@ -131,4 +131,3 @@ class Bus extends GObject.Object {
         this._dbusImpl.unexport();
     }
 });
-
