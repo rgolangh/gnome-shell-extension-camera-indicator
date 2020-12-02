@@ -3,10 +3,6 @@
 This project is mostly exploratory to learn more about eBPF and DBUS but comes in handy for me to know when 
 my camera is on without me noticing.
 
-<p>
-  <img src="screenshot.png" width="350" title="gnome-shell-extension-camera-indicator">
-</p>
-
 ## Dependencies
 This extension works by listening on DBUS events sent to it whenever a camera or video device is in use.
 To monitor those kernel events I use eBPF to trace C open calls on /dev/videoX devices, and 
