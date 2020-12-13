@@ -20,3 +20,15 @@ trace_cmd c:open  "${DEVICE}" | while read line; do dbus_cmd true; done
 # TODO close event is not emited - find out which one is it 
 #trace_cmd c:close "${DEVICE}" | while read line; do dbus_cmd false; done
 
+
+
+# WIP doesn't work yet
+# trace all read file descriptors and put in a map
+
+# sudo bpftrace --unsafe -e \
+#   'tracepoint:syscalls:sys_enter_read /uid == 1000/ \
+#   { @openfiles[system("readlink -f /proc/%d/fd/%d", uid, args->fd)] = count(); }'
+#
+#  system() doesn't return a string, therefor it can't be stored in the @openfiles map
+
+
