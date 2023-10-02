@@ -1,0 +1,53 @@
+#!/usr/bin/env python
+
+from bcc import BPF
+
+# define BPF program
+prog = """
+#include <uapi/linux/ptrace.h>
+#include <linux/sched.h>
+#include <linux/fdtable.h>
+
+TRACEPOINT_PROBE(syscalls, sys_enter_read)
+{
+    struct files_struct *files = NULL;
+    struct fdtable *fdt = NULL;
+    struct file *f = NULL;
+    struct dentry *de = NULL;
+    struct qstr dn = {};
+    struct task_struct *curr = (struct task_struct *)bpf_get_current_task();
+    struct file **_fd = NULL;
+    bpf_probe_read(&files, sizeof(files), &curr->files);
+    bpf_probe_read(&fdt, sizeof(fdt), &files->fdt);
+
+    bpf_probe_read(&f, sizeof(f), &fdt[args->fd]);
+    bpf_probe_read(&_fd, sizeof(_fd), &fdt[args->fd]);
+    bpf_probe_read(&f, sizeof(f), &_fd[args->fd]);
+
+    bpf_probe_read(&_fd, sizeof(_fd), &fdt->fd);
+    bpf_probe_read(&f, sizeof(f), &_fd[args->fd]);
+
+    bpf_probe_read(&de, sizeof(de), &f->f_path.dentry);
+    bpf_probe_read(&dn, sizeof(dn), &de->d_name);
+    bpf_trace_printk("fstat fd=%d file=%s\\n", args->fd, dn.name);
+
+    bpf_trace_printk("fstat name1=%s\\n", de->d_iname);
+    bpf_trace_printk("fstat name2=%s\\n", dn.name);
+
+    return 0;
+}
+"""
+
+# load BPF program
+b = BPF(text=prog)
+
+# header
+print("%-18s %-16s %-6s %s" % ("TIME(s)", "COMM", "PID", "MESSAGE"))
+
+# format output
+while 1:
+    try:
+        (task, pid, cpu, flags, ts, msg) = b.trace_fields()
+    except ValueError:
+        continue
+    print("%-18.9f %-16s %-6d %s" % (ts, task, pid, msg))
